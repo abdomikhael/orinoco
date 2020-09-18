@@ -40,6 +40,7 @@ async function teddies() {
    var nameProduct = document.createElement("h2");  		
    var priceProduct =document.createElement("p");
    var infoProduct = document.createElement("a");
+   infoProduct.setAttribute("class", "btn btn-primary btn-sm");
 
    imageEl.src =teddy.imageUrl;
    nameProduct.textContent =teddy.name;
@@ -61,7 +62,7 @@ async function teddies() {
    productListEl.setAttribute("class", "product-list");
    leftProduct.setAttribute("class", "product-list__photo");
    rightProduct.setAttribute("class", "product-list__info");
-   infoProduct.setAttribute("class", "product-button")
+
 
 
  });
@@ -143,33 +144,28 @@ async function teddyInfo(){
   leftInfo.setAttribute("class", "produit-photo");
   rightInfo.setAttribute("class", "produit-info");
   productInfo.setAttribute("class", "produit-block");
-  colorsInfo.setAttribute("class", "color-button");
+  colorsInfo.setAttribute("class", " custom-select color-button");
+  panierButton.setAttribute("class", "btn btn-primary btn-sm")
 
   console.log(teddy)
-  var colorsOption = document.createElement("option");
-  var colorsOption2 = document.createElement("option");
-  var colorsOption3= document.createElement("option");  
-  var colorsOption4 = document.createElement("option");
-
-
-
-
-  colorsInfo.appendChild(colorsOption);
-  colorsInfo.appendChild(colorsOption2);
-  colorsInfo.appendChild(colorsOption3);
-  colorsInfo.appendChild(colorsOption4);
-
-  colorsOption.textContent= teddy.colors;
-  colorsOption2.textContent= teddy.colors;
-  colorsOption3.textContent= teddy.colors;
-  colorsOption4.textContent= teddy.colors;
   
 
 
 
 
+  for (var i = 0; i < teddy.colors.length; i++) {
+    var color =teddy.colors[i];
+    var colorsOption = document.createElement("option");
+    colorsInfo.appendChild(colorsOption);
 
-  panierButton.addEventListener("click",function IL (){
+    colorsOption.textContent= teddy.colors;
+
+  }
+
+  
+
+
+  panierButton.addEventListener("click",function displayIncart (){
 
 
 
@@ -183,7 +179,7 @@ async function teddyInfo(){
    localStorage.setItem("price", teddy.price);
    let imageTeddy = JSON.stringify(teddy.imageUrl);
    localStorage.setItem("image", teddy.imageUrl);
-   let colorTeddy = JSON.stringify(teddy.colors);
+   let colorTeddy = JSON.stringify(teddy.colors[i]);
    localStorage.setItem("color", colorTeddy);
 
 
@@ -207,35 +203,94 @@ function addTeddyToCart(){
   menuPanier.appendChild(sectionPanier);
   var table = document.createElement("table");
   sectionPanier.appendChild(table);
+
+
+
+  var ligneTitre = document.createElement("tr");
+  table.appendChild(ligneTitre);
   var lignePanier = document.createElement("tr");
   table.appendChild(lignePanier);
-
+  var ligneTotal = document.createElement("tr");
+  table.appendChild(ligneTotal);
   var titreImage = document.createElement("th");
-    lignePanier.appendChild(titreImage);
 
   titreImage.textContent = "Image";
 
-
   var titreName =document.createElement("th")
-  lignePanier.appendChild(titreName);
   titreName.textContent ="Nom";
   var titrePrix = document.createElement("th");
-  lignePanier.appendChild(titrePrix);
   titrePrix.textContent ="prix";
   var titreColor =document.createElement("th");
-  lignePanier.appendChild(titreColor);
   titreColor.textContent = "couleur"
-  var cellImagePanier = document.createElement("img");
+  ligneTitre.appendChild(titreImage);
+  ligneTitre.appendChild(titreName);
+  ligneTitre.appendChild(titrePrix);
+  ligneTitre.appendChild(titreColor)
+  
+
+  
+
+  var cellImagePanier = document.createElement("td");
+  var imagePanier =document.createElement("img");
+  cellImagePanier.appendChild(imagePanier);
   var cellNamePanier =document.createElement("td");
   var cellPrice = document.createElement("td");
   var cellColor =document.createElement("td");
   lignePanier.appendChild(cellImagePanier);
-  titreImage.appendChild(cellImagePanier)
+  
+
+  
+
+
+  
+
+  
+
   lignePanier.appendChild(cellNamePanier);
-  titreName.appendChild(cellNamePanier)
+
   lignePanier.appendChild(cellPrice);
-  titrePrix.appendChild(cellPrice)
+
   lignePanier.appendChild(cellColor);
+  var cellButtonQuntity = document.createElement("div");
+  lignePanier.appendChild(cellButtonQuntity);
+  cellButtonQuntity.setAttribute("class", "number-input md-number-input")  
+  var buttonQuantityMinus = document.createElement("button");
+  cellButtonQuntity.appendChild(buttonQuantityMinus);
+  buttonQuantityMinus.setAttribute("class", "minus");
+  buttonQuantityMinus.setAttribute("onclick", "this.parentNode.querySelector('input[type=number]').stepDown()") ;
+  var inputQuantity = document.createElement("input");
+  cellButtonQuntity.appendChild(inputQuantity);
+  inputQuantity.setAttribute("class", "quantity")
+  inputQuantity.setAttribute("min", "0")
+  inputQuantity.setAttribute("name", "quantity");
+  inputQuantity.setAttribute("value", "1");
+  inputQuantity.setAttribute("type", "number")
+  ;  var buttonQuantityPlus =document.createElement("button");
+  cellButtonQuntity.appendChild(buttonQuantityPlus);
+  buttonQuantityPlus.setAttribute("class", "plus");
+  buttonQuantityPlus.setAttribute("onclick", "this.parentNode.querySelector('input[type=number]').stepUp()");
+  var buttonRemove =document.createElement("button");
+  lignePanier.appendChild(buttonRemove);
+  buttonRemove.setAttribute("class", "btn btn-outline-danger");
+  buttonRemove.textContent = "supprimer"
+
+
+
+
+  var cellTotalTitre =document.createElement("td");
+  ligneTotal.appendChild(cellTotalTitre);
+  cellTotalTitre.textContent = "Total";
+  var cellTotalAmount = document.createElement("td");
+  ligneTotal.appendChild(cellTotalAmount);
+
+  var blockButtonCommande = document.createElement("button");
+  sectionPanier.appendChild(blockButtonCommande);
+  blockButtonCommande.setAttribute("class", "btn btn-primary btn-lg btn-block");
+  blockButtonCommande.textContent = "Passer la commande"
+
+  var buttonTotal = document.createElement("td");
+  ligneTotal.appendChild(buttonTotal);
+
 
 
   var name =  localStorage.getItem("name");
@@ -243,28 +298,33 @@ function addTeddyToCart(){
   var price = localStorage.getItem("price");
   cellPrice.innerHTML =price/100+" €";
   var image = localStorage.getItem("image");
-  cellImagePanier.src = image;
-  cellImagePanier.setAttribute("class", "image-cart");
+  imagePanier.src = image;
+  imagePanier.setAttribute("class", "image-cart");
 
- /*var Color = localStorage.getItem("color");
+  var Color = localStorage.getItem("color");
   cellColor.innerHTML = color;
+  var totalObjet = inputQuantity.value * price ;
+  console.log(totalObjet);
+
 
 
 
   cellImagePanier.src = image;
   lignePanier.setAttribute("class", "product-cart");
-  cellImagePanier.setAttribute("class", "image-cart");*/
+  cellImagePanier.setAttribute("class", "image-cart");
+  buttonRemove.addEventListener("click", function removeItem(){
+  buttonRemove.textContent = "i am here"
+      });
+  /*  Localstorage.removeItem("name");
+    Localstorage.removeItem("price");
+    Localstorage.removeItem("image");
+    Localstorage.removeItem("color");
+    element.parentNode.removeChild(cellButtonQuntity)*/
 
 
   
-  
 
   
-
-
-
-
-
 }
 
 
