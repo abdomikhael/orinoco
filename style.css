@@ -114,18 +114,21 @@
 	text-align: left;
 }
 #basket-menu{
-	min-height: 100vh;
+
 	display: flex;
 	text-align: center;
 	justify-content: center;
 	font-size: 20px;
+	flex-direction: column;
 
 }
-
+table{
+	display: inline-block;
+}
 .produc-basket {
 
 }
-.image-cart {
+.product-cart img {
 	height: 40px;
 	width: 40px;
 
@@ -136,7 +139,7 @@ tr{
 }
 th{
 
-
+	text-align: initial;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	width: 100px;
@@ -145,90 +148,19 @@ th{
 td{
 
 	
-
+	text-align: start;
 	margin-top: 10px;
 	margin-bottom: 10px;
 		width: 100px;
 		
 		
 }
-input[type="number"] {
-  -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-          appearance: textfield;
+.product-cart {
+	margin : 10px;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
+.form-user{
+margin-left: 200px;
 }
-.number-input {
-  margin-right: 3rem;
-}
-.number-input button {
-  -webkit-appearance: none;
-  background-color: transparent;
-  border: none;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0;
-  position: relative;
-}
-.number-input button:before,
-.number-input button:after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  height: 2px;
-  transform: translate(-50%, -50%);
-}
-.number-input button.plus:after {
-  transform: translate(-50%, -50%) rotate(90deg);
-}
-.number-input input[type=number] {
-  text-align: center;
-}
-
-
-.md-number-input.number-input {
-  border: 2px solid #ddd;
-  width: 11.8rem;
-}
-.md-number-input.number-input button {
-  outline: none;
-  width: 3rem;
-  height: 2rem;
-  padding-top: .8rem;
-}
-.md-number-input.number-input button.minus {
-  padding-left: 8px;
-}
-.md-number-input.number-input button.plus {
-  padding-left: 2px;
-}
-.md-number-input.number-input button:before,
-.md-number-input.number-input button:after {
-  width: 1rem;
-  background-color: #212121;
-}
-.md-number-input.number-input input[type=number] {
-  max-width: 5rem;
-  padding: .5rem;
-  border: solid #ddd;
-  border-width: 0 2px;
-  font-size: 2rem;
-  height: 3rem;
-  font-weight: bold;
-  outline: none;
-}
-@media not all and (min-resolution:.001dpcm)
-{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
-  .number-input.md-number-input.safari_only button:before, 
-  .number-input.md-number-input.safari_only button:after {
-    margin-top: -.6rem;
-  }
-}}
-
 footer{
 	display: flex;
 	justify-content: space-evenly;

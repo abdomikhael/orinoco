@@ -132,200 +132,260 @@ async function teddyInfo(){
   priceInfo.textContent=teddy.price /100+" euro";
   panierButton.textContent= " Ajouter au panier";
   descInfo.textContent =teddy.description;
-
-
-
-
-
-
-  
-
-
   leftInfo.setAttribute("class", "produit-photo");
   rightInfo.setAttribute("class", "produit-info");
   productInfo.setAttribute("class", "produit-block");
   colorsInfo.setAttribute("class", " custom-select color-button");
   panierButton.setAttribute("class", "btn btn-primary btn-sm")
+  panierButton.setAttribute("data", "id")
 
-  console.log(teddy)
+
   
-
-
-
-
   for (var i = 0; i < teddy.colors.length; i++) {
     var color =teddy.colors[i];
     var colorsOption = document.createElement("option");
+    colorsOption.textContent= color;
     colorsInfo.appendChild(colorsOption);
 
-    colorsOption.textContent= teddy.colors;
+    
 
-  }
+}
 
   
 
 
   panierButton.addEventListener("click",function displayIncart (){
+  panierButton.textContent ="i love you";
+
+  var panier = JSON.parse(localStorage.getItem("panier"));
+
+  var nb_prod = 0;
+  if(panier != null)
+  {
+    nb_prod = panier.length;
+  }
+  console.log(nb_prod)
+
+  if(nb_prod > 0)
+  {
+    panier.push(teddy._id);
+  }
+  else
+  {
+    panier = [teddy._id];
+  }
+  panier = JSON.stringify(panier);
+
+  localStorage.setItem("panier", panier)
 
 
-
-
-   panierButton.textContent ="i love you";
-   var counte = document.getElementById("counter");
-   counte++;
-   let nameTeddy = JSON.stringify(teddy.name);
-   localStorage.setItem("name",nameTeddy);
-   let priceTeddy = JSON.stringify(teddy.price);
-   localStorage.setItem("price", teddy.price);
-   let imageTeddy = JSON.stringify(teddy.imageUrl);
-   localStorage.setItem("image", teddy.imageUrl);
-   let colorTeddy = JSON.stringify(teddy.colors[i]);
-   localStorage.setItem("color", colorTeddy);
-
-
-   console.log(localStorage)
-
-
-
-
+  
  });
-
-
 }
-function addTeddyToCart(){
 
 
 
 
 
+
+
+
+
+async function showTeddyInCart(){
   var menuPanier = document.getElementById("basket-menu");
+      var panier = JSON.parse(localStorage.getItem("panier"))
+  
+    
   var sectionPanier = document.createElement("section");
   menuPanier.appendChild(sectionPanier);
   var table = document.createElement("table");
   sectionPanier.appendChild(table);
-
-
-
   var ligneTitre = document.createElement("tr");
   table.appendChild(ligneTitre);
-  var lignePanier = document.createElement("tr");
-  table.appendChild(lignePanier);
-  var ligneTotal = document.createElement("tr");
-  table.appendChild(ligneTotal);
+  var totalLigne = document.createElement("tr");
+  sectionPanier.appendChild(totalLigne);
+
+  var totalTitre = document.createElement("th");
+  totalLigne.appendChild(totalTitre);
+  totalTitre.textContent = "Total";
+  var totalEl = document.createElement("td");
+  totalLigne.appendChild(totalEl);
+  
+
+
+  
   var titreImage = document.createElement("th");
-
   titreImage.textContent = "Image";
-
   var titreName =document.createElement("th")
   titreName.textContent ="Nom";
   var titrePrix = document.createElement("th");
   titrePrix.textContent ="prix";
-  var titreColor =document.createElement("th");
-  titreColor.textContent = "couleur"
   ligneTitre.appendChild(titreImage);
   ligneTitre.appendChild(titreName);
   ligneTitre.appendChild(titrePrix);
-  ligneTitre.appendChild(titreColor)
+
+
+  for(i = 0; i < panier.length; i++)
+  {
+
+    var id = panier[i]
+
+    var teddy = await getteddyInfo(id);
+    console.log(teddy)
+
+      var lignePanier = document.createElement("tr");
+  table.appendChild(lignePanier);
+    var cellImagePanier = document.createElement("td");
+    var imagePanier =document.createElement("img");
+    cellImagePanier.appendChild(imagePanier);
+    var cellNamePanier =document.createElement("td");
+    var cellPrice = document.createElement("td");
+
+
+ 
+    var buttonRemove =document.createElement("button");
+     
+    lignePanier.appendChild(cellImagePanier);
+    lignePanier.appendChild(cellNamePanier);
+    lignePanier.appendChild(cellPrice);
+
+
+
+    lignePanier.appendChild(buttonRemove);
+    
+    
+      lignePanier.setAttribute("class", "product-cart");
+
+    cellImagePanier.setAttribute("class", "image-cart");
+    
+   
+
+    buttonRemove.setAttribute("class", "btn btn-outline-danger"); 
+      buttonRemove.textContent = "supprimer"
+      cellNamePanier.textContent = teddy.name;
+      cellPrice.innerHTML = teddy.price/100+" €";
+      imagePanier.src = teddy.imageUrl;
+
+  
+  
+        
+
+  buttonRemove.addEventListener("click", function(id){
+
+    
+   
+        lignePanier.remove(id)
+  
+  panier = JSON.stringify(panier);
+
+  localStorage.removeItem("panier", panier)
+})
+
+
   
 
   
 
-  var cellImagePanier = document.createElement("td");
-  var imagePanier =document.createElement("img");
-  cellImagePanier.appendChild(imagePanier);
-  var cellNamePanier =document.createElement("td");
-  var cellPrice = document.createElement("td");
-  var cellColor =document.createElement("td");
-  lignePanier.appendChild(cellImagePanier);
-  
+  }
 
   
+    }
+function form(){
+  var menuPanier = document.getElementById("basket-menu")
+
+  var form =document.createElement("form")
+    menuPanier.appendChild(form)
+    form.setAttribute("class", "form-user")
+  var formGroup = document.createElement("div");
+  form.appendChild(formGroup);
+  formGroup.setAttribute("class", "form-group row");
+  var labelNom = document.createElement("label");
+  formGroup.appendChild(labelNom);
+  labelNom.setAttribute("class", "col-sm-2 col-form-label")
+  var divUser = document.createElement("div");
+  formGroup.appendChild(divUser);
+  divUser.setAttribute("class", "col-sm-6")
+   var userName = document.createElement("input");
+  userName.setAttribute("for", "form-Nom");
+  labelNom.textContent = "Nom";
+  userName.required;
+ 
+  divUser.appendChild(userName);
+  userName.setAttribute("class", "form-control");
+  userName.setAttribute("type", "text")
+  userName.setAttribute("placeholder", "Nom");
+  userName.setAttribute("id", "form-Nom");
+
+var formGroupMail = document.createElement("div");
+  form.appendChild(formGroupMail);
+  formGroupMail.setAttribute("class", "form-group row");
+  var labelMail = document.createElement("label");
+  formGroupMail.appendChild(labelMail);
+  labelMail.setAttribute("class", "col-sm-2 col-form-label")
+  var divUserMail = document.createElement("div");
+  formGroupMail.appendChild(divUserMail);
+  divUserMail.setAttribute("class", "col-sm-6")
+   var userMail = document.createElement("input");
+  userMail.setAttribute("for", "form-mail");
+  userMail.required;
+  labelMail.textContent = "Email";
+ 
+  divUserMail.appendChild(userMail);
+  userMail.setAttribute("class", "form-control");
+  userMail.setAttribute("type", "email")
+  userMail.setAttribute("placeholder", "email@mail.com");
+  userMail.setAttribute("id", "form-phone");
+
+var formGroupAdress = document.createElement("div");
+  form.appendChild(formGroupAdress);
+  formGroupAdress.setAttribute("class", "form-group row");
+  var labelAdress = document.createElement("texarea");
+  formGroupAdress.appendChild(labelAdress);
+  labelAdress.setAttribute("class", "col-sm-2 col-form-label")
+  var divUserAdress = document.createElement("div");
+  formGroupAdress.appendChild(divUserAdress);
+  divUserAdress.setAttribute("class", " row-2 col-sm-6")
+   var userAdress = document.createElement("input");
+  userAdress.setAttribute("for", "form-adress");
+  labelAdress.textContent = "Adresse";
+ 
+  divUserAdress.appendChild(userAdress);
+  userAdress.setAttribute("class", "form-control");
+  userAdress.setAttribute("type", "text")
+  userAdress.setAttribute("placeholder", "Votre adress");
+  userAdress.setAttribute("id", "form-adress");
+  userAdress.required;
 
 
-  
-
-  
-
-  lignePanier.appendChild(cellNamePanier);
-
-  lignePanier.appendChild(cellPrice);
-
-  lignePanier.appendChild(cellColor);
-  var cellButtonQuntity = document.createElement("div");
-  lignePanier.appendChild(cellButtonQuntity);
-  cellButtonQuntity.setAttribute("class", "number-input md-number-input")  
-  var buttonQuantityMinus = document.createElement("button");
-  cellButtonQuntity.appendChild(buttonQuantityMinus);
-  buttonQuantityMinus.setAttribute("class", "minus");
-  buttonQuantityMinus.setAttribute("onclick", "this.parentNode.querySelector('input[type=number]').stepDown()") ;
-  var inputQuantity = document.createElement("input");
-  cellButtonQuntity.appendChild(inputQuantity);
-  inputQuantity.setAttribute("class", "quantity")
-  inputQuantity.setAttribute("min", "0")
-  inputQuantity.setAttribute("name", "quantity");
-  inputQuantity.setAttribute("value", "1");
-  inputQuantity.setAttribute("type", "number")
-  ;  var buttonQuantityPlus =document.createElement("button");
-  cellButtonQuntity.appendChild(buttonQuantityPlus);
-  buttonQuantityPlus.setAttribute("class", "plus");
-  buttonQuantityPlus.setAttribute("onclick", "this.parentNode.querySelector('input[type=number]').stepUp()");
-  var buttonRemove =document.createElement("button");
-  lignePanier.appendChild(buttonRemove);
-  buttonRemove.setAttribute("class", "btn btn-outline-danger");
-  buttonRemove.textContent = "supprimer"
-
-
-
-
-  var cellTotalTitre =document.createElement("td");
-  ligneTotal.appendChild(cellTotalTitre);
-  cellTotalTitre.textContent = "Total";
-  var cellTotalAmount = document.createElement("td");
-  ligneTotal.appendChild(cellTotalAmount);
-
-  var blockButtonCommande = document.createElement("button");
-  sectionPanier.appendChild(blockButtonCommande);
-  blockButtonCommande.setAttribute("class", "btn btn-primary btn-lg btn-block");
+  var formGroupPhone = document.createElement("div");
+  form.appendChild(formGroupPhone);
+  formGroupPhone.setAttribute("class", "form-group row");
+  var labelPhone = document.createElement("label");
+  formGroupPhone.appendChild(labelPhone);
+  labelPhone.setAttribute("class", "col-sm-2 col-form-label")
+  var divUserPhone = document.createElement("div");
+  formGroupPhone.appendChild(divUserPhone);
+  divUserPhone.setAttribute("class", "col-sm-6")
+   var userPhone = document.createElement("input");
+  userPhone.setAttribute("for", "form-phone");
+  labelPhone.textContent = "Téléphone";
+  userPhone.required;
+ 
+  divUserPhone.appendChild(userPhone);
+  userPhone.setAttribute("class", "form-control");
+  userPhone.setAttribute("type", "number")
+  userPhone.setAttribute("placeholder", "Téléphone");
+  userMail.setAttribute("id", "form-phone");
+      
+    var blockButtonCommande = document.createElement("a");
+  form.appendChild(blockButtonCommande);
+  blockButtonCommande.href = "confirmation.html"
+  blockButtonCommande.setAttribute("class", "btn btn-primary col-sm-8 btn-lg btn-block");
+  blockButtonCommande.setAttribute("type", "submit")
   blockButtonCommande.textContent = "Passer la commande"
-
-  var buttonTotal = document.createElement("td");
-  ligneTotal.appendChild(buttonTotal);
-
-
-
-  var name =  localStorage.getItem("name");
-  cellNamePanier.innerHTML = name;
-  var price = localStorage.getItem("price");
-  cellPrice.innerHTML =price/100+" €";
-  var image = localStorage.getItem("image");
-  imagePanier.src = image;
-  imagePanier.setAttribute("class", "image-cart");
-
-  var Color = localStorage.getItem("color");
-  cellColor.innerHTML = color;
-  var totalObjet = inputQuantity.value * price ;
-  console.log(totalObjet);
-
-
-
-
-  cellImagePanier.src = image;
-  lignePanier.setAttribute("class", "product-cart");
-  cellImagePanier.setAttribute("class", "image-cart");
-  buttonRemove.addEventListener("click", function removeItem(){
-  buttonRemove.textContent = "i am here"
-      });
-  /*  Localstorage.removeItem("name");
-    Localstorage.removeItem("price");
-    Localstorage.removeItem("image");
-    Localstorage.removeItem("color");
-    element.parentNode.removeChild(cellButtonQuntity)*/
-
-
-  
-
-  
 }
 
+  
 
+    
 
