@@ -113,7 +113,7 @@
 .produit-info p{
 	text-align: left;
 }
-#basket-menu{
+.container-fluid{
 
 	display: flex;
 	text-align: center;
@@ -122,10 +122,11 @@
 	flex-direction: column;
 
 }
-table{
-	display: inline-block;
+.table{
+margin-left: 200px;
+
 }
-.produc-basket {
+. {
 
 }
 .product-cart img {
@@ -133,32 +134,14 @@ table{
 	width: 40px;
 
 }
-tr{
-	display: flex;
-	height: 50px;
-}
-th{
 
-	text-align: initial;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	width: 100px;
-
-}
-td{
-
-	
-	text-align: start;
-	margin-top: 10px;
-	margin-bottom: 10px;
-		width: 100px;
 		
 		
 }
 .product-cart {
 	margin : 10px;
 }
-.form-user{
+.form {
 margin-left: 200px;
 }
 footer{

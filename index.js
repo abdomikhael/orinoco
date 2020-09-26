@@ -149,38 +149,38 @@ async function teddyInfo(){
 
     
 
-}
+  }
 
   
 
 
   panierButton.addEventListener("click",function displayIncart (){
-  panierButton.textContent ="i love you";
+    panierButton.textContent ="i love you";
 
-  var panier = JSON.parse(localStorage.getItem("panier"));
+    var panier = JSON.parse(localStorage.getItem("panier"));
 
-  var nb_prod = 0;
-  if(panier != null)
-  {
-    nb_prod = panier.length;
-  }
-  console.log(nb_prod)
+    var nb_prod = 0;
+    if(panier != null)
+    {
+      nb_prod = panier.length;
+    }
+    console.log(nb_prod)
 
-  if(nb_prod > 0)
-  {
-    panier.push(teddy._id);
-  }
-  else
-  {
-    panier = [teddy._id];
-  }
-  panier = JSON.stringify(panier);
+    if(nb_prod > 0)
+    {
+      panier.push(teddy._id);
+    }
+    else
+    {
+      panier = [teddy._id];
+    }
+    panier = JSON.stringify(panier);
 
-  localStorage.setItem("panier", panier)
+    localStorage.setItem("panier", panier)
 
 
-  
- });
+
+  });
 }
 
 
@@ -192,38 +192,9 @@ async function teddyInfo(){
 
 
 async function showTeddyInCart(){
-  var menuPanier = document.getElementById("basket-menu");
-      var panier = JSON.parse(localStorage.getItem("panier"))
-  
-    
-  var sectionPanier = document.createElement("section");
-  menuPanier.appendChild(sectionPanier);
-  var table = document.createElement("table");
-  sectionPanier.appendChild(table);
-  var ligneTitre = document.createElement("tr");
-  table.appendChild(ligneTitre);
-  var totalLigne = document.createElement("tr");
-  sectionPanier.appendChild(totalLigne);
-
-  var totalTitre = document.createElement("th");
-  totalLigne.appendChild(totalTitre);
-  totalTitre.textContent = "Total";
-  var totalEl = document.createElement("td");
-  totalLigne.appendChild(totalEl);
-  
 
 
-  
-  var titreImage = document.createElement("th");
-  titreImage.textContent = "Image";
-  var titreName =document.createElement("th")
-  titreName.textContent ="Nom";
-  var titrePrix = document.createElement("th");
-  titrePrix.textContent ="prix";
-  ligneTitre.appendChild(titreImage);
-  ligneTitre.appendChild(titreName);
-  ligneTitre.appendChild(titrePrix);
-
+    var panier = JSON.parse(localStorage.getItem("panier"));
 
   for(i = 0; i < panier.length; i++)
   {
@@ -233,159 +204,64 @@ async function showTeddyInCart(){
     var teddy = await getteddyInfo(id);
     console.log(teddy)
 
-      var lignePanier = document.createElement("tr");
-  table.appendChild(lignePanier);
-    var cellImagePanier = document.createElement("td");
-    var imagePanier =document.createElement("img");
-    cellImagePanier.appendChild(imagePanier);
-    var cellNamePanier =document.createElement("td");
-    var cellPrice = document.createElement("td");
+    
+    var tableEl = document.getElementById("table-achat");
+    var cellTotal = document.getElementById("total");
 
+    var lignePanier = document.createElement("tr");
 
- 
-    var buttonRemove =document.createElement("button");
-     
-    lignePanier.appendChild(cellImagePanier);
+    tableEl.appendChild(lignePanier);
+    var cellNamePanier = document.createElement("td");  
+    cellNamePanier.setAttribute("scope", "col")
     lignePanier.appendChild(cellNamePanier);
+    var cellPrice = document.createElement ("td");
     lignePanier.appendChild(cellPrice);
-
-
-
-    lignePanier.appendChild(buttonRemove);
-    
-    
-      lignePanier.setAttribute("class", "product-cart");
-
-    cellImagePanier.setAttribute("class", "image-cart");
-    
-   
-
-    buttonRemove.setAttribute("class", "btn btn-outline-danger"); 
-      buttonRemove.textContent = "supprimer"
-      cellNamePanier.textContent = teddy.name;
-      cellPrice.innerHTML = teddy.price/100+" €";
-      imagePanier.src = teddy.imageUrl;
-
+    cellPrice.setAttribute("scope", "col")
+    cellNamePanier.textContent = teddy.name;
+    cellPrice.innerHTML = teddy.price/100+" €";
   
-  
-        
-
-  buttonRemove.addEventListener("click", function(id){
-
-    
-   
-        lignePanier.remove(id)
-  
-  panier = JSON.stringify(panier);
-
-  localStorage.removeItem("panier", panier)
-})
-
-
-  
-
-  
-
-  }
-
-  
-    }
-function form(){
-  var menuPanier = document.getElementById("basket-menu")
-
-  var form =document.createElement("form")
-    menuPanier.appendChild(form)
-    form.setAttribute("class", "form-user")
-  var formGroup = document.createElement("div");
-  form.appendChild(formGroup);
-  formGroup.setAttribute("class", "form-group row");
-  var labelNom = document.createElement("label");
-  formGroup.appendChild(labelNom);
-  labelNom.setAttribute("class", "col-sm-2 col-form-label")
-  var divUser = document.createElement("div");
-  formGroup.appendChild(divUser);
-  divUser.setAttribute("class", "col-sm-6")
-   var userName = document.createElement("input");
-  userName.setAttribute("for", "form-Nom");
-  labelNom.textContent = "Nom";
-  userName.required;
- 
-  divUser.appendChild(userName);
-  userName.setAttribute("class", "form-control");
-  userName.setAttribute("type", "text")
-  userName.setAttribute("placeholder", "Nom");
-  userName.setAttribute("id", "form-Nom");
-
-var formGroupMail = document.createElement("div");
-  form.appendChild(formGroupMail);
-  formGroupMail.setAttribute("class", "form-group row");
-  var labelMail = document.createElement("label");
-  formGroupMail.appendChild(labelMail);
-  labelMail.setAttribute("class", "col-sm-2 col-form-label")
-  var divUserMail = document.createElement("div");
-  formGroupMail.appendChild(divUserMail);
-  divUserMail.setAttribute("class", "col-sm-6")
-   var userMail = document.createElement("input");
-  userMail.setAttribute("for", "form-mail");
-  userMail.required;
-  labelMail.textContent = "Email";
- 
-  divUserMail.appendChild(userMail);
-  userMail.setAttribute("class", "form-control");
-  userMail.setAttribute("type", "email")
-  userMail.setAttribute("placeholder", "email@mail.com");
-  userMail.setAttribute("id", "form-phone");
-
-var formGroupAdress = document.createElement("div");
-  form.appendChild(formGroupAdress);
-  formGroupAdress.setAttribute("class", "form-group row");
-  var labelAdress = document.createElement("texarea");
-  formGroupAdress.appendChild(labelAdress);
-  labelAdress.setAttribute("class", "col-sm-2 col-form-label")
-  var divUserAdress = document.createElement("div");
-  formGroupAdress.appendChild(divUserAdress);
-  divUserAdress.setAttribute("class", " row-2 col-sm-6")
-   var userAdress = document.createElement("input");
-  userAdress.setAttribute("for", "form-adress");
-  labelAdress.textContent = "Adresse";
- 
-  divUserAdress.appendChild(userAdress);
-  userAdress.setAttribute("class", "form-control");
-  userAdress.setAttribute("type", "text")
-  userAdress.setAttribute("placeholder", "Votre adress");
-  userAdress.setAttribute("id", "form-adress");
-  userAdress.required;
-
-
-  var formGroupPhone = document.createElement("div");
-  form.appendChild(formGroupPhone);
-  formGroupPhone.setAttribute("class", "form-group row");
-  var labelPhone = document.createElement("label");
-  formGroupPhone.appendChild(labelPhone);
-  labelPhone.setAttribute("class", "col-sm-2 col-form-label")
-  var divUserPhone = document.createElement("div");
-  formGroupPhone.appendChild(divUserPhone);
-  divUserPhone.setAttribute("class", "col-sm-6")
-   var userPhone = document.createElement("input");
-  userPhone.setAttribute("for", "form-phone");
-  labelPhone.textContent = "Téléphone";
-  userPhone.required;
- 
-  divUserPhone.appendChild(userPhone);
-  userPhone.setAttribute("class", "form-control");
-  userPhone.setAttribute("type", "number")
-  userPhone.setAttribute("placeholder", "Téléphone");
-  userMail.setAttribute("id", "form-phone");
       
-    var blockButtonCommande = document.createElement("a");
-  form.appendChild(blockButtonCommande);
-  blockButtonCommande.href = "confirmation.html"
-  blockButtonCommande.setAttribute("class", "btn btn-primary col-sm-8 btn-lg btn-block");
-  blockButtonCommande.setAttribute("type", "submit")
-  blockButtonCommande.textContent = "Passer la commande"
-}
+ 
+        
+        cellTotal.textContent += teddy.price/100;
 
-  
+      
+
+
+    }
+
 
     
+
+    var submitButton = document.querySelectorAll("#submit")
+    var form = document.querySelectorAll(".form")
+
+  submitButton.addEventListener("click", function(){
+      var contact =new contact(form);
+      var produit = new produit(teedy)
+
+
+      let request = new XMLHttpRequest();
+      request.onload = function () {
+        if (
+          this.readyState == XMLHttpRequest.DONE &&
+          this.status >= 200 &&
+          this.status < 400
+          ) {
+          const serverReponse =document.getElementById("message")
+        serverReponse.innerHTML=  this.responseText;
+
+        console.log("envoyé");
+      } else {
+        console.log("non-envoyé")
+      }
+
+      request.open("POST", "http://localhost:3000/api/teddies/order", true);
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(contact, produit );
+
+    }
+
+  });
+  }
 
