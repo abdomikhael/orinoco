@@ -1,46 +1,39 @@
-
-
-
-
+// requet pour demander les produit de API.
 getAllTeddies = () => {
-	return new Promise((resolve) => {
-		let request = new XMLHttpRequest();
-		request.onreadystatechange = function () {
-			if (
-				this.readyState == XMLHttpRequest.DONE &&
-				this.status >= 200 &&
-				this.status < 400
-				) {
-				resolve(JSON.parse(this.response));
+  return new Promise((resolve) => {
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+     if (
+      this.readyState == XMLHttpRequest.DONE &&
+      this.status >= 200 &&
+      this.status < 400
+      ) {
+      resolve(JSON.parse(this.response));
 
-			console.log("Connecté");
-		} else {
-      console.log("non-connecté")
-    }
-  };
-  request.open("GET", "http://localhost:3000/api/teddies/",true);
-  request.send();
+    console.log("Connecté");
+  } else {
+    console.log("non-connecté")
+  }
+};
+request.open("GET", "http://localhost:3000/api/teddies/",true);
+request.send();
 });
 };
-// la page HTML après l'appel de produit :
-
-
-
+// creation  de page  index.html in javascript et afficher les produits dans la page.
 async function teddies() {
   const teddies = await getAllTeddies();
-
-
   teddies.forEach((teddy) => {
 
-   var mainEl = document.getElementById("main");
-   var productListEl = document.createElement("section");
-   var leftProduct = document.createElement("div");
-   var imageEl =document.createElement("img");
-   var rightProduct = document.createElement("div");
-   var nameProduct = document.createElement("h2");  		
-   var priceProduct =document.createElement("p");
-   var infoProduct = document.createElement("a");
-   infoProduct.setAttribute("class", "btn btn-primary btn-sm");
+    var mainEl = document.getElementById("main");
+    var productListEl = document.createElement("section");
+    var leftProduct = document.createElement("div");
+    var imageEl =document.createElement("img");
+    var rightProduct = document.createElement("div");
+    var nameProduct = document.createElement("h2");  		
+    var priceProduct =document.createElement("p");
+    var infoProduct = document.createElement("a");
+    infoProduct.setAttribute("class", "btn btn-primary btn-sm");
+   // utiliser les éléments crees pour afficher les produits 
 
    imageEl.src =teddy.imageUrl;
    nameProduct.textContent =teddy.name;
@@ -63,15 +56,9 @@ async function teddies() {
    leftProduct.setAttribute("class", "product-list__photo");
    rightProduct.setAttribute("class", "product-list__info");
 
-
-
  });
-
-
-
-
-
 };
+// demander un produit tout seul pour afficher ses détails dans une page Ajax GET
 getteddyInfo = (id) => {
   return new Promise((resolve) => {
     let request = new XMLHttpRequest();
@@ -92,14 +79,12 @@ getteddyInfo = (id) => {
   request.send();
 });
 };
-
-
+// création de page pour afficher la description de produit dans la page produit.html et
 
 async function teddyInfo(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get('id');
-  console.log(id)
 
   const teddy = await getteddyInfo(id);
   var mainInfo = document.getElementById("mainInfo");
@@ -126,7 +111,7 @@ async function teddyInfo(){
   rightInfo.appendChild(panierButton);
 
 
-
+  // afficher les information de la requet API dans la page produit.html
   imageInfo.src =teddy.imageUrl;
   nameInfo.textContent =teddy.name;
   priceInfo.textContent=teddy.price /100+" euro";
@@ -140,21 +125,18 @@ async function teddyInfo(){
   panierButton.setAttribute("data", "id")
 
 
-  
+
+  // utiliser le loup pour les options des couleurs des produits dans la page produit.html
   for (var i = 0; i < teddy.colors.length; i++) {
     var color =teddy.colors[i];
     var colorsOption = document.createElement("option");
     colorsOption.textContent= color;
     colorsInfo.appendChild(colorsOption);
 
-    
-
   }
+  // envoyer les id en utilisant le localStorage pour les recevoir et les ajouter  dans le panier 
 
-  
-
-
-  panierButton.addEventListener("click",function displayIncart (){
+  panierButton.addEventListener("click",function (){
     panierButton.textContent ="i love you";
 
     var panier = JSON.parse(localStorage.getItem("panier"));
@@ -164,7 +146,7 @@ async function teddyInfo(){
     {
       nb_prod = panier.length;
     }
-    console.log(nb_prod)
+
 
     if(nb_prod > 0)
     {
@@ -177,91 +159,182 @@ async function teddyInfo(){
     panier = JSON.stringify(panier);
 
     localStorage.setItem("panier", panier)
-
-
-
   });
 }
 
-
-
-
-
-
-
-
+//fonction dans la page panier pour gérer les produits et recevoir les data de localstorage 
 
 async function showTeddyInCart(){
 
 
-    var panier = JSON.parse(localStorage.getItem("panier"));
+  var panier = JSON.parse(localStorage.getItem("panier"));
+  var total = 0;
+  var cellTotal = document.getElementById("total");
+  if (panier != null ){
+    for(i = 0; i < panier.length; i++)
+    {
 
-  for(i = 0; i < panier.length; i++)
-  {
+      var id = panier[i]
 
-    var id = panier[i]
+      var teddy = await getteddyInfo(id);
 
-    var teddy = await getteddyInfo(id);
-    console.log(teddy)
 
-    
-    var tableEl = document.getElementById("table-achat");
-    var cellTotal = document.getElementById("total");
 
-    var lignePanier = document.createElement("tr");
+      var tableEl = document.getElementById("table-achat");
+      var lignePanier = document.createElement("tr");
+      tableEl.appendChild(lignePanier);
+      var cellNamePanier = document.createElement("td");  
+      cellNamePanier.setAttribute("scope", "col")
+      lignePanier.appendChild(cellNamePanier);
+      var cellPrice = document.createElement ("td");
+      lignePanier.appendChild(cellPrice);
+      cellPrice.setAttribute("scope", "col")
+      cellNamePanier.textContent = teddy.name;
+      cellPrice.innerHTML = teddy.price/100+" €";
 
-    tableEl.appendChild(lignePanier);
-    var cellNamePanier = document.createElement("td");  
-    cellNamePanier.setAttribute("scope", "col")
-    lignePanier.appendChild(cellNamePanier);
-    var cellPrice = document.createElement ("td");
-    lignePanier.appendChild(cellPrice);
-    cellPrice.setAttribute("scope", "col")
-    cellNamePanier.textContent = teddy.name;
-    cellPrice.innerHTML = teddy.price/100+" €";
-  
-      
- 
-        
-        cellTotal.textContent += teddy.price/100;
-
-      
+      total += (teddy.price/100);
 
 
     }
+    // creer un cell pour le total de produits et stocké ça dans sessionStorage
+    cellTotal.textContent = total;
+    sessionStorage.setItem('prixTotal', JSON.stringify(total));
+  }
+
+}
+// préparer les data pour un requet ajax POST qui envoie les values des inputes de forumulaires au API 
+function sendData(){
+  submit = document.getElementById("submit");
+  submit.addEventListener("click", function(event) {
+
+    event.preventDefault();
+
+    var champ_prenom =document.getElementById("prenom");
+    var champ_nom =  document.getElementById("nom");
+    var champ_adresse = document.getElementById("adresse");
+    var champ_ville = document.getElementById("ville");
+    var champ_mail = document.getElementById("mail");
+
+   // objet qui contient les info de l'utilisateur rempli au forumulaire 
+
+   var contact ={
+    "firstName" : champ_prenom.value,
+    "lastName" : champ_nom.value,
+    "address" : champ_adresse.value,
+    "city" : champ_ville.value,
+    "email" : champ_mail.value
+  }
+    // id de produit recu de localStorage
+    var products = JSON.parse(localStorage.getItem("panier"));
+
+    var obj ={"contact" : contact, "products" : products};
+
+    var data =  JSON.stringify(obj);
+    // prevenir l'utilisateur si l'un des champs est vide par un message 
+    if(contact.firstName == "" ){
+     var prenomAide =document.getElementById("prenom-aide");
+     prenomAide.textContent = "prénom est invalide";
+     prenomAide.style.color = "red";
+     return event.preventDefault();
+    }
+   else if(contact.lastName == ""){
+    var nomAide =document.getElementById("nom-aide");
+    nomAide.textContent = "nom est invalide";
+    nomAide.style.color = "red";
+    return event.preventDefault();
+
+    }
+  else if ( contact.address==""){
+    var adresseAide =document.getElementById("adress-aide");
+    adresseAide.textContent = "adresse est invalide";
+    adresseAide.style.color = "red";
+    return event.preventDefault();
+
+    }
+  else if(contact.city==""){
+    var villeAide =document.getElementById("ville-aide");
+    villeAide.textContent = "ville est invalide";
+    villeAide.style.color = "red";
+    return event.preventDefault();
+    }
+  else if(contact.email==""){
+    var mailAide =document.getElementById("email-aide");
+    mailAide.textContent = "email est invalide";
+    mailAide.style.color = "red";
+    return event.preventDefault()
+    }
+  else{ 
 
 
-    
-
-    var submitButton = document.querySelectorAll("#submit")
-    var form = document.querySelectorAll(".form")
-
-  submitButton.addEventListener("click", function(){
-      var contact =new contact(form);
-      var produit = new produit(teedy)
-
-
+    confirmation(data);
+  }
+});
+}  
+  // Ajax POST pour les produits selectionnes et les info de forumulaires
+  confirmation = (data) => {
+    return new Promise((resolve) => {
       let request = new XMLHttpRequest();
-      request.onload = function () {
+
+      request.onreadystatechange = function () {
         if (
           this.readyState == XMLHttpRequest.DONE &&
           this.status >= 200 &&
           this.status < 400
           ) {
-          const serverReponse =document.getElementById("message")
-        serverReponse.innerHTML=  this.responseText;
-
+          resolve(JSON.parse(this.responseText));
         console.log("envoyé");
-      } else {
-        console.log("non-envoyé")
-      }
+        let confirmation = this.responseText;
+      // utiliser le sessionStoragepour stocké les id de produits selectionnés
+      sessionStorage.setItem('order', confirmation);
+       // vider le localstorage après le message de confirmation 
+       localStorage.clear();
+       window.location.href = "confirmation.html";
 
-      request.open("POST", "http://localhost:3000/api/teddies/order", true);
-      request.setRequestHeader("Content-Type", "application/json");
-      request.send(contact, produit );
 
+     } else {
+      console.log("non-envoyé")
     }
-
-  });
+  };
+  request.open("POST", "http://localhost:3000/api/teddies/order");
+  request.setRequestHeader("Content-Type", "application/json");
+  request.send(data);
+});
+  };
+// création de la page qui affiche le message de confirmation
+function showData(){
+  if(sessionStorage.getItem('order') == null || sessionStorage.getItem('prixTotal') == null)
+  {
+    window.location.href= "index.html";
   }
 
+  let data = JSON.parse(sessionStorage.getItem('order'));
+  let prix = JSON.parse(sessionStorage.getItem('prixTotal'));
+  var message = document.getElementById("total-confirm");
+
+
+  var paragraphDiv = document.createElement("div");
+  message.appendChild(paragraphDiv);
+  paragraphDiv.setAttribute("class", "alert alert-success ")
+  var paragraph = document.createElement("p")
+  paragraph.setAttribute("class", "alert-heading .mt-auto")
+  paragraphDiv.appendChild(paragraph);
+  // affichage de message de confirmation 
+  paragraph.innerHTML = 
+  "Merci pour votre commande<br> Le numéro de la commande :<br> "+data.orderId+" <br>Total = "+prix+" €<br> A bientôt "
+
+  var retourDiv = document.createElement("div")
+  message.appendChild(retourDiv);
+  retourDiv.setAttribute("class", "row");
+  var retour = document.createElement("button");
+  retourDiv.appendChild(retour);
+  retour.textContent = "Retour à l'accueil";
+  retour.setAttribute("class", "btn btn-primary btn-lg col-sm-5 mx-auto");
+  retour.addEventListener("click", function (){
+
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href ="index.html"  
+  })
+
+  
+}
