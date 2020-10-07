@@ -2,6 +2,7 @@
 getAllTeddies = () => {
   return new Promise((resolve) => {
     let request = new XMLHttpRequest();
+
     request.onreadystatechange = function () {
      if (
       this.readyState == XMLHttpRequest.DONE &&
@@ -9,15 +10,15 @@ getAllTeddies = () => {
       this.status < 400
       ) {
       resolve(JSON.parse(this.response));
-
     console.log("Connecté");
+
   } else {
     console.log("non-connecté")
   }
-};
-request.open("GET", "http://localhost:3000/api/teddies/",true);
-request.send();
-});
+  };
+  request.open("GET", "http://localhost:3000/api/teddies/",true);
+  request.send();
+  });
 };
 // creation  de page  index.html in javascript et afficher les produits dans la page.
 async function teddies() {
@@ -32,10 +33,11 @@ async function teddies() {
     var nameProduct = document.createElement("h2");  		
     var priceProduct =document.createElement("p");
     var infoProduct = document.createElement("a");
-    infoProduct.setAttribute("class", "btn btn-primary btn-sm");
+    infoProduct.setAttribute("class", "btn btn-primary btn-sm"); 
    // utiliser les éléments crees pour afficher les produits 
 
    imageEl.src =teddy.imageUrl;
+    console.log(imageEl)
    nameProduct.textContent =teddy.name;
    priceProduct.textContent=teddy.price /100+" euro";
    infoProduct.textContent= " plus d'info !";
@@ -59,7 +61,7 @@ async function teddies() {
  });
 };
 // demander un produit tout seul pour afficher ses détails dans une page Ajax GET
-getteddyInfo = (id) => {
+getTeddyInfo = (id) => {
   return new Promise((resolve) => {
     let request = new XMLHttpRequest();
     request.onreadystatechange = function () {
@@ -86,7 +88,7 @@ async function teddyInfo(){
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get('id');
 
-  const teddy = await getteddyInfo(id);
+  const teddy = await getTeddyInfo(id);
   var mainInfo = document.getElementById("mainInfo");
   var productInfo = document.createElement("section");
   var leftInfo = document.createElement("div");
@@ -223,7 +225,7 @@ function sendData(){
     "address" : champ_adresse.value,
     "city" : champ_ville.value,
     "email" : champ_mail.value
-  }
+      }
     // id de produit recu de localStorage
     var products = JSON.parse(localStorage.getItem("panier"));
 
@@ -236,70 +238,69 @@ function sendData(){
      prenomAide.textContent = "prénom est invalide";
      prenomAide.style.color = "red";
      return event.preventDefault();
-    }
-   else if(contact.lastName == ""){
-    var nomAide =document.getElementById("nom-aide");
-    nomAide.textContent = "nom est invalide";
-    nomAide.style.color = "red";
-    return event.preventDefault();
+        }
+    else if(contact.lastName == ""){
+      var nomAide =document.getElementById("nom-aide");
+      nomAide.textContent = "nom est invalide";
+      nomAide.style.color = "red";
+      return event.preventDefault();
 
-    }
-  else if ( contact.address==""){
-    var adresseAide =document.getElementById("adress-aide");
-    adresseAide.textContent = "adresse est invalide";
-    adresseAide.style.color = "red";
-    return event.preventDefault();
+      }
+    else if ( contact.address==""){
+      var adresseAide =document.getElementById("adress-aide");
+      adresseAide.textContent = "adresse est invalide";
+      adresseAide.style.color = "red";
+      return event.preventDefault();
 
-    }
-  else if(contact.city==""){
-    var villeAide =document.getElementById("ville-aide");
-    villeAide.textContent = "ville est invalide";
-    villeAide.style.color = "red";
-    return event.preventDefault();
-    }
-  else if(contact.email==""){
-    var mailAide =document.getElementById("email-aide");
-    mailAide.textContent = "email est invalide";
-    mailAide.style.color = "red";
-    return event.preventDefault()
-    }
-  else{ 
+      }
+    else if(contact.city==""){
+      var villeAide =document.getElementById("ville-aide");
+      villeAide.textContent = "ville est invalide";
+      villeAide.style.color = "red";
+      return event.preventDefault();
+      }
+    else if(contact.email==""){
+      var mailAide =document.getElementById("email-aide");
+      mailAide.textContent = "email est invalide";
+      mailAide.style.color = "red";
+      return event.preventDefault()
+      }
+    else{ 
 
 
-    confirmation(data);
-  }
-});
+        confirmation(data);
+      }
+  });
 }  
   // Ajax POST pour les produits selectionnes et les info de forumulaires
-  confirmation = (data) => {
-    return new Promise((resolve) => {
-      let request = new XMLHttpRequest();
-
-      request.onreadystatechange = function () {
-        if (
-          this.readyState == XMLHttpRequest.DONE &&
-          this.status >= 200 &&
-          this.status < 400
-          ) {
-          resolve(JSON.parse(this.responseText));
+confirmation = (data) => {
+  return new Promise((resolve) => {
+    let request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+      if (
+        this.readyState == XMLHttpRequest.DONE &&
+        this.status >= 200 &&
+        this.status < 400
+        ) {
+        resolve(JSON.parse(this.responseText));
         console.log("envoyé");
         let confirmation = this.responseText;
-      // utiliser le sessionStoragepour stocké les id de produits selectionnés
-      sessionStorage.setItem('order', confirmation);
-       // vider le localstorage après le message de confirmation 
-       localStorage.clear();
-       window.location.href = "confirmation.html";
+        // utiliser le sessionStoragepour stocké les id de produits selectionnés
+        sessionStorage.setItem('order', confirmation);
+        // vider le localstorage après le message de confirmation 
+        localStorage.clear();
+          window.location.href = "confirmation.html";
 
 
-     } else {
-      console.log("non-envoyé")
-    }
-  };
-  request.open("POST", "http://localhost:3000/api/teddies/order");
-  request.setRequestHeader("Content-Type", "application/json");
-  request.send(data);
-});
-  };
+        } else {
+            console.log("non-envoyé")
+        }
+      };
+      request.open("POST", "http://localhost:3000/api/teddies/order");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(data);
+  });
+};
 // création de la page qui affiche le message de confirmation
 function showData(){
   if(sessionStorage.getItem('order') == null || sessionStorage.getItem('prixTotal') == null)
