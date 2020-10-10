@@ -9,15 +9,15 @@ getAllTeddies = () => {
       this.status >= 200 &&
       this.status < 400
       ) {
-      resolve(JSON.parse(this.response));
-    console.log("Connecté");
+       resolve(JSON.parse(this.response));
+      console.log("Connecté");
 
-  } else {
-    console.log("non-connecté")
-  }
-  };
-  request.open("GET", "http://localhost:3000/api/teddies/",true);
-  request.send();
+      } else {
+        console.log("non-connecté")
+      }
+    };
+    request.open("GET", "http://localhost:3000/api/teddies/",true);
+    request.send();
   });
 };
 // creation  de page  index.html in javascript et afficher les produits dans la page.
@@ -37,7 +37,6 @@ async function teddies() {
    // utiliser les éléments crees pour afficher les produits 
 
    imageEl.src =teddy.imageUrl;
-    console.log(imageEl)
    nameProduct.textContent =teddy.name;
    priceProduct.textContent=teddy.price /100+" euro";
    infoProduct.textContent= " plus d'info !";
@@ -72,14 +71,14 @@ getTeddyInfo = (id) => {
         ) {
         resolve(JSON.parse(this.response));
 
-      console.log("Connecté");
-    } else {
-      console.log("non-connecté")
-    }
-  };
-  request.open("GET", "http://localhost:3000/api/teddies/"+id,true);
-  request.send();
-});
+        console.log("Connecté");
+      } else {
+        console.log("non-connecté")
+      }
+    };
+    request.open("GET", "http://localhost:3000/api/teddies/"+id,true);
+    request.send();
+  });
 };
 // création de page pour afficher la description de produit dans la page produit.html et
 
@@ -139,7 +138,7 @@ async function teddyInfo(){
   // envoyer les id en utilisant le localStorage pour les recevoir et les ajouter  dans le panier 
 
   panierButton.addEventListener("click",function (){
-    panierButton.textContent ="i love you";
+    panierButton.textContent ="ajoutée au panier";
 
     var panier = JSON.parse(localStorage.getItem("panier"));
 
