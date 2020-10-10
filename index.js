@@ -177,7 +177,7 @@ async function showTeddyInCart(){
 
       var id = panier[i]
 
-      var teddy = await getteddyInfo(id);
+      var teddy = await getTeddyInfo(id);
 
 
 
